@@ -1,13 +1,13 @@
 
 CXX=g++
-CFLAGS=$$(pkg-config --cflags stb)
+CFLAGS=$$(pkg-config --cflags stb) -std=c++20
 LIBS=$$(pkg-config --libs stb)
 
 BIN_DIR=bin
 OBJ_DIR=obj
 SRC_DIR=src
 
-OBJECTS=main earth_texture
+OBJECTS=main earth_texture projection
 ALL=$(addprefix $(BIN_DIR)/, mkworldmap)
 
 .PHONY: all

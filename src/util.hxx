@@ -10,6 +10,12 @@ namespace mkworldmap
     char unsigned blue;
   };
 
+  struct point
+  {
+    double x;
+    double y;
+  };
+  
   inline double clamp(double x, double lower_bound, double upper_bound)
   {
     if (x < lower_bound)
