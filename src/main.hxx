@@ -10,6 +10,7 @@ namespace mkworldmap
     mercator,
     miller,
     central_cylindrical,
+    sinusoidal,
     invalid
   };
 

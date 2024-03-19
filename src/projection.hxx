@@ -101,6 +101,17 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
+  class sinusoidal_projection : public projection
+  {
+  public:
+    sinusoidal_projection();
+    sinusoidal_projection(sinusoidal_projection const &) = default;
+    sinusoidal_projection(sinusoidal_projection &&) = default;
+    sinusoidal_projection & operator=(sinusoidal_projection const &) = default;
+    sinusoidal_projection & operator=(sinusoidal_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
 }
 
 #endif

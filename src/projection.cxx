@@ -124,4 +124,30 @@ namespace mkworldmap
       std::atan(y)
     };
   }
+
+  sinusoidal_projection::sinusoidal_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::numbers::pi * 0.5,
+	std::numbers::pi * 0.5
+      }
+  {
+  }
+
+  point sinusoidal_projection::invert(double x, double y) const
+  {
+    double cos = std::cos(y);
+    if (x < -std::numbers::pi * cos || x > std::numbers::pi * cos)
+      return point {
+	std::nan(""),
+	std::nan("")
+      };
+    else
+      return point {
+	x / cos,
+	y
+      };
+  }
+  
 }

@@ -37,7 +37,7 @@ namespace mkworldmap
 
   bool get_boolean_command_line_option(char const * short_option, char const * long_option, bool default_value, int argc, char const * argv[])
   {
-    for (std::size_t i = 1; i < argc - 1; ++i) {
+    for (std::size_t i = 1; i < argc; ++i) {
       bool is_short_option = short_option && std::strcmp(argv[i], short_option) == 0;
       bool is_long_option = long_option && std::strcmp(argv[i], long_option) == 0;
       if (is_short_option || is_long_option) {
@@ -62,6 +62,7 @@ namespace mkworldmap
       : std::strcmp(method, "mercator") == 0 ? projection_method::mercator
       : std::strcmp(method, "miller") == 0 ? projection_method::miller
       : std::strcmp(method, "central-cylindrical") == 0 ? projection_method::central_cylindrical
+      : std::strcmp(method, "sinusoidal") == 0 ? projection_method::sinusoidal
       : projection_method::invalid;
   }
 
@@ -131,6 +132,9 @@ int main(int argc, char const * argv[])
   case projection_method::central_cylindrical: {
     double max_latitude = get_max_latitude(argc, argv);
     proj = std::make_unique<central_cylindrical_projection>(max_latitude * std::numbers::pi / 180);
+  } break;
+  case projection_method::sinusoidal: {
+    proj = std::make_unique<sinusoidal_projection>();
   } break;
   }
   

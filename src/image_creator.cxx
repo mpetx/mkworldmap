@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <memory>
 #include <numbers>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -27,6 +28,8 @@ namespace mkworldmap
     double nx =  x * proj.width() / (width - 1) + proj.x_min;
     double ny = y * proj.height() / (height - 1) + proj.y_min;
     point p = proj.invert(nx, ny);
+    if (std::isnan(p.x) || std::isnan(p.y))
+      return color { 0xaa, 0xaa, 0xaa };
     p.x += standard_longitude;
     if (p.x < std::numbers::pi)
       p.x += 2 * std::numbers::pi;
