@@ -106,4 +106,22 @@ namespace mkworldmap
     };
   }
 
+  central_cylindrical_projection::central_cylindrical_projection(double max_latitude_)
+    : max_latitude { max_latitude_ },
+      projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::tan(max_latitude_),
+	std::tan(max_latitude_)
+      }
+  {
+  }
+
+  point central_cylindrical_projection::invert(double x, double y) const
+  {
+    return point {
+      x,
+      std::atan(y)
+    };
+  }
 }

@@ -9,6 +9,7 @@ namespace mkworldmap
     cylindrical_equal_area,
     mercator,
     miller,
+    central_cylindrical,
     invalid
   };
 

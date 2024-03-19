@@ -86,6 +86,21 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
+  class central_cylindrical_projection : public projection
+  {
+    double max_latitude;
+    
+  public:
+    central_cylindrical_projection() = delete;
+    central_cylindrical_projection(central_cylindrical_projection const &) = default;
+    central_cylindrical_projection(central_cylindrical_projection &&) = default;
+    central_cylindrical_projection & operator=(central_cylindrical_projection const &) = default;
+    central_cylindrical_projection & operator=(central_cylindrical_projection &&) = default;
+    central_cylindrical_projection(double);
+    
+    point invert(double, double) const override;
+  };
+
 }
 
 #endif

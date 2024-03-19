@@ -61,6 +61,7 @@ namespace mkworldmap
       : std::strcmp(method, "cylindrical-equal-area") == 0 ? projection_method::cylindrical_equal_area
       : std::strcmp(method, "mercator") == 0 ? projection_method::mercator
       : std::strcmp(method, "miller") == 0 ? projection_method::miller
+      : std::strcmp(method, "central-cylindrical") == 0 ? projection_method::central_cylindrical
       : projection_method::invalid;
   }
 
@@ -126,6 +127,10 @@ int main(int argc, char const * argv[])
   } break;
   case projection_method::miller: {
     proj = std::make_unique<miller_projection>();
+  } break;
+  case projection_method::central_cylindrical: {
+    double max_latitude = get_max_latitude(argc, argv);
+    proj = std::make_unique<central_cylindrical_projection>(max_latitude * std::numbers::pi / 180);
   } break;
   }
   
