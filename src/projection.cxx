@@ -58,5 +58,52 @@ namespace mkworldmap
       std::asin(y * s_factor)
     };
   }
+
+  double gudermann(double x)
+  {
+    return std::asin(std::tanh(x));
+  }
+
+  double inverse_gudermann(double x)
+  {
+    return std::atanh(std::sin(x));
+  }
   
+  mercator_projection::mercator_projection(double max_latitude_)
+    : max_latitude { max_latitude_ },
+      projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-inverse_gudermann(max_latitude_),
+	inverse_gudermann(max_latitude_)
+      }
+  {
+  }
+
+  point mercator_projection::invert(double x, double y) const
+  {
+    return point {
+      x,
+      gudermann(y)
+    };
+  }
+
+  miller_projection::miller_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-1.25 * inverse_gudermann(0.4 * std::numbers::pi),
+	1.25 * inverse_gudermann(0.4 * std::numbers::pi)
+      }
+  {
+  }
+
+  point miller_projection::invert(double x, double y) const
+  {
+    return point {
+      x,
+      1.25 * gudermann(0.8 * y)
+    };
+  }
+
 }

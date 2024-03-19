@@ -7,6 +7,8 @@ namespace mkworldmap
   {
     equirectangular,
     cylindrical_equal_area,
+    mercator,
+    miller,
     invalid
   };
 
@@ -19,6 +21,7 @@ namespace mkworldmap
   bool get_south_up(int argc, char const * argv[]);
   
   double get_standard_latitude(int argc, char const * argv[]);
+  double get_max_latitude(int argc, char const * argv[]);
 
 }
 

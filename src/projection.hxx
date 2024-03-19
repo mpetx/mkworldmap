@@ -56,7 +56,36 @@ namespace mkworldmap
     
     point invert(double, double) const override;
   };
+
+  double gudermann(double x);
   
+  class mercator_projection : public projection
+  {
+    double max_latitude;
+    
+  public:
+    mercator_projection() = delete;
+    mercator_projection(mercator_projection const &) = default;
+    mercator_projection(mercator_projection &&) = default;
+    mercator_projection & operator=(mercator_projection const &) = default;
+    mercator_projection & operator=(mercator_projection &&) = default;
+    mercator_projection(double);
+    
+    point invert(double, double) const override;
+  };
+
+  class miller_projection : public projection
+  {
+  public:
+    miller_projection();
+    miller_projection(miller_projection const &) = default;
+    miller_projection(miller_projection &&) = default;
+    miller_projection & operator=(miller_projection const &) = default;
+    miller_projection & operator=(miller_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
 }
 
 #endif

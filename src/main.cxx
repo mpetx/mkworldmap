@@ -39,6 +39,10 @@ namespace mkworldmap
       return projection_method::equirectangular;
     else if (std::strcmp(method, "cylindrical-equal-area") == 0)
       return projection_method::cylindrical_equal_area;
+    else if (std::strcmp(method, "mercator") == 0)
+      return projection_method::mercator;
+    else if (std::strcmp(method, "miller") == 0)
+      return projection_method::miller;
     else
       return projection_method::invalid;
   }
@@ -87,6 +91,15 @@ namespace mkworldmap
     return std::atof(asl);
   }
 
+  double get_max_latitude(int argc, char const * argv[])
+  {
+    double const default_max_latitude = 80.0;
+    char const * aml = get_command_line_option(nullptr, "--max-latitude", argc, argv);
+    if (!aml)
+      return default_max_latitude;
+    return std::atof(aml);
+  }
+
 }
 
 int main(int argc, char const * argv[])
@@ -115,6 +128,17 @@ int main(int argc, char const * argv[])
       return 1;
     }
     proj = std::make_unique<mkworldmap::cylindrical_equal_area_projection>(standard_latitude * std::numbers::pi / 180);
+  } break;
+  case projection_method::mercator: {
+    double max_latitude = get_max_latitude(argc, argv);
+    if (max_latitude <= 0 || max_latitude >= 90) {
+      std::cerr << "ERROR: invalid max latitude value.";
+      return 1;
+    }
+    proj = std::make_unique<mkworldmap::mercator_projection>(max_latitude * std::numbers::pi / 180);
+  } break;
+  case projection_method::miller: {
+    proj = std::make_unique<mkworldmap::miller_projection>();
   } break;
   }
   
