@@ -149,5 +149,25 @@ namespace mkworldmap
 	y
       };
   }
+
+  mollweide_projection::mollweide_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::numbers::pi * 0.5,
+	std::numbers::pi * 0.5
+      }
+  {
+  }
+
+  point mollweide_projection::invert(double x, double y) const
+  {
+    double param = std::asin(y * 2 / std::numbers::pi);
+    double lon = x / std::cos(param);
+    if (lon < -std::numbers::pi || lon > std::numbers::pi)
+      return point { std::nan(""), std::nan("") };
+    double lat = std::asin((std::sin(2 * param) + 2 * param) / std::numbers::pi);
+    return point { lon, lat };
+  }
   
 }

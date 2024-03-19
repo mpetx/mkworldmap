@@ -11,6 +11,7 @@ namespace mkworldmap
     miller,
     central_cylindrical,
     sinusoidal,
+    mollweide,
     invalid
   };
 

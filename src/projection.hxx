@@ -112,6 +112,19 @@ namespace mkworldmap
     
     point invert(double, double) const override;
   };
+
+  class mollweide_projection : public projection
+  {
+  public:
+    mollweide_projection();
+    mollweide_projection(mollweide_projection const &) = default;
+    mollweide_projection(mollweide_projection &&) = default;
+    mollweide_projection & operator=(mollweide_projection const &) = default;
+    mollweide_projection & operator=(mollweide_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+  
 }
 
 #endif

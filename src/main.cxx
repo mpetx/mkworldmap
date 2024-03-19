@@ -63,6 +63,7 @@ namespace mkworldmap
       : std::strcmp(method, "miller") == 0 ? projection_method::miller
       : std::strcmp(method, "central-cylindrical") == 0 ? projection_method::central_cylindrical
       : std::strcmp(method, "sinusoidal") == 0 ? projection_method::sinusoidal
+      : std::strcmp(method, "mollweide") == 0 ? projection_method::mollweide
       : projection_method::invalid;
   }
 
@@ -135,6 +136,9 @@ int main(int argc, char const * argv[])
   } break;
   case projection_method::sinusoidal: {
     proj = std::make_unique<sinusoidal_projection>();
+  } break;
+  case projection_method::mollweide: {
+    proj = std::make_unique<mollweide_projection>();
   } break;
   }
   
