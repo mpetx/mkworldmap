@@ -62,6 +62,15 @@ namespace mkworldmap
     return std::atof(asl);
   }
 
+  bool get_south_up(int argc, char const * argv[])
+  {
+    bool const default_south_up = false;
+    char const * asu = get_command_line_option(nullptr, "--south-up", argc, argv);
+    if (!asu)
+      return default_south_up;
+    return !(std::strcmp(asu, "F") == 0 || std::strcmp(asu, "f") == 0 || std::strcmp(asu, "no") == 0 || std::strcmp(asu, "No") == 0 || std::strcmp(asu, "0") == 0);
+  }
+  
   char const * get_output_path(int argc, char const * argv[])
   {
     char const * const default_output_path = "world-map.jpg";
@@ -115,7 +124,8 @@ int main(int argc, char const * argv[])
     std::cerr << "ERROR: invalid standard longitude value.";
     return 1;
   }
-  mkworldmap::image_creator creator { texture, *proj, width, standard_longitude * std::numbers::pi / 180 };
+  bool south_up = get_south_up(argc, argv);
+  mkworldmap::image_creator creator { texture, *proj, width, standard_longitude * std::numbers::pi / 180, south_up };
 
   char const * output_path = get_output_path(argc, argv);
   creator.save_image(output_path);

@@ -11,6 +11,7 @@
 | `-w` | `--width` | 出力画像の幅 | 1024 |
 | `-s` | `--standard-longitude` | 標準経線（-180～180） | 150 |
 | `-o` | `--option` | 出力画像パス | `world-map.jpg` |
+| | `--south-up` | 南上北下にする | `F` |
 
 #### `equirectangular`
 `equirectangular`は正距円筒図法です。

@@ -16,7 +16,8 @@ namespace mkworldmap
   std::size_t get_output_image_width(int argc, char const * argv[]);
   double get_standard_longitude(int argc, char const * argv[]);
   char const * get_output_path(int argc, char const * argv[]);
-
+  bool get_south_up(int argc, char const * argv[]);
+  
   double get_standard_latitude(int argc, char const * argv[]);
 
 }

@@ -14,6 +14,7 @@ namespace mkworldmap
     std::size_t width;
     std::size_t height;
     double standard_longitude;
+    bool south_up;
     earth_texture const & texture;
     projection const & proj;
 
@@ -27,7 +28,7 @@ namespace mkworldmap
     image_creator(image_creator &&) = default;
     image_creator & operator=(image_creator const &) = default;
     image_creator & operator=(image_creator &&) = default;
-    image_creator(earth_texture const &, projection const &, std::size_t, double);
+    image_creator(earth_texture const &, projection const &, std::size_t, double, bool = false);
 
     void save_image(std::string const & path) const;
     

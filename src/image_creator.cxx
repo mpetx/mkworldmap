@@ -8,17 +8,22 @@
 
 namespace mkworldmap
 {
-  image_creator::image_creator(earth_texture const & texture, projection const & proj, std::size_t width, double sl)
+  image_creator::image_creator(earth_texture const & texture, projection const & proj, std::size_t width, double sl, bool south_up)
     : width { width },
       height { static_cast<std::size_t>(width * proj.height() / proj.width()) },
       standard_longitude { sl },
       texture { texture },
+      south_up { south_up },
       proj { proj }
   {
   }
 
   color image_creator::color_at(double x, double y) const
   {
+    if (south_up) {
+      x = width - x - 1;
+      y = height - y - 1;
+    }
     double nx =  x * proj.width() / (width - 1) + proj.x_min;
     double ny = y * proj.height() / (height - 1) + proj.y_min;
     point p = proj.invert(nx, ny);
