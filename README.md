@@ -1,55 +1,39 @@
 # mkworldmap
 
 ## 使い方
+### 書式
+```console
+mkworldmap OPTIONS
+```
 
 ### コマンドライン引数
-#### 一般引数
+
 | ショート名 | ロング名 | 説明 | デフォルト値 |
-|:-:|:-:|:-|:-:|
+|:-|:-|:-|:-:|
 | `-p` | `--projection` | 投影法名 | 必須  |
-| `-t` | `--texture` | テクスチャファイル名 | デフォルトテクスチャ |
-| `-w` | `--width` | 出力画像の幅 | 1024 |
-| `-s` | `--standard-longitude` | 標準経線（-180～180） | 150 |
-| `-o` | `--option` | 出力画像パス | `world-map.jpg` |
-| | `--south-up` | 南上北下にする | なし |
+| `-t` | `--texture` | テクスチャファイル名 | デフォルト |
+| `-w` | `--width` | 出力画像の幅 | 768 |
+| `-s` | `--standard-longitude` | 標準経線 | 150 |
+| `-o` | `--output` | 出力画像パス | `world-map.jpg` |
+| | `--south-up` | 南を上にする | 北が上 |
+| | `--standard-latitude` | 標準緯線（正積円筒） | 0 |
+| | `--max-latitude` | 緯線の範囲（メルカトル、心射円筒） | 80 |
 
-#### `equirectangular`
-`equirectangular`は正距円筒図法です。
+投影法名は以下のいずれかです。
 
-追加のコマンドライン引数はありません。
+| 値 | 説明 |
+|:-:|:-|
+| `equirectangular` | 正距円筒図法 |
+| `cylindrical-equal-area` | 正積円筒図法 |
+| `mercator` | メルカトル図法 |
+| `miller` | ミラー図法 |
+| `central-cylindrical` | 心射円筒図法 |
+| `sinusoidal` | サンソン図法 |
+| `mollweide` | モルワイデ図法 |
 
-#### `cylindrical-equal-area`
-`cylindrical-equal-area`は正積円筒図法です。ランベルト正積円筒図法やゴール・ピーターズ図法を含みます。
+経度と緯度の範囲は次の通りです。
 
-| オプション | 説明 | デフォルト値 |
-|:-:|:-|:-:|
-| `--standard-latitude` | 標準緯線（-90～90） | 0 |
-
-#### `mercator`
-`mercator`はメルカトル図法です。
-
-| オプション | 説明 | デフォルト値 |
-|:-:|:-|:-:|
-| `--max-latitude` | 緯度の最大値（-90～90） | 80 |
-
-#### `miller`
-`miller`はミラー図法です。
-
-追加のコマンドライン引数はありません。
-
-#### `central-cylindrical`
-`central-cylindrical`は心射円筒図法です。
-
-| オプション | 説明 | デフォルト値 |
-|:-:|:-|:-:|
-| `--max-latitude` | 緯度の最大値（-90～90） | 80 |
-
-#### `sinusoidal`
-`sinusoidal`はサンソン図法です。
-
-追加のコマンドライン引数はありません。
-
-#### `mollweide`
-`mollweide`はモルワイデ図法です。
-
-追加のコマンドライン引数はありません。
+| | 最小値 | 最大値 |
+|:-:|:-:|:-:|
+| 経度 | -180 | 180 |
+| 緯度 | -90 | 90 |
