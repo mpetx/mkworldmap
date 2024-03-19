@@ -31,8 +31,8 @@ namespace mkworldmap
   {
     x = clamp(x, longitude_min, longitude_max);
     y = clamp(y, latitude_min, latitude_max);
-    double nx = (x - longitude_min) * width / (longitude_max - longitude_min);
-    double ny = (y - longitude_min) * height / (latitude_max - latitude_min);
+    double nx = (x - longitude_min) * (width - 1) / (longitude_max - longitude_min);
+    double ny = (y - latitude_min) * (height - 1) / (latitude_max - latitude_min);
     std::size_t ix = static_cast<std::size_t>(nx);
     std::size_t iy = static_cast<std::size_t>(ny);
     return color_at_grid(ix, iy);
