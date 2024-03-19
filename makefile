@@ -7,7 +7,7 @@ BIN_DIR=bin
 OBJ_DIR=obj
 SRC_DIR=src
 
-OBJECTS=main earth_texture projection
+OBJECTS=main earth_texture projection image_creator
 ALL=$(addprefix $(BIN_DIR)/, mkworldmap)
 
 .PHONY: all
