@@ -43,10 +43,10 @@ namespace mkworldmap
   cylindrical_equal_area_projection::cylindrical_equal_area_projection(double sl)
     : s_factor { std::cos(sl) },
       projection {
-	-s_factor * std::numbers::pi,
-	s_factor * std::numbers::pi,
-	-1 / s_factor,
-	1 / s_factor
+	-std::cos(sl) * std::numbers::pi,
+	std::cos(sl) * std::numbers::pi,
+	-1 / std::cos(sl),
+	1 / std::cos(sl)
       }
   {
   }
