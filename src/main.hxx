@@ -13,6 +13,10 @@ namespace mkworldmap
   };
 
   char const * get_command_line_option(char const * short_option, char const * long_option, int argc, char const * argv[]);
+  int get_integral_command_line_option(char const * short_option, char const * long_option, int default_value, int argc, char const * argv[]);
+  double get_floating_command_line_option(char const * short_option, char const * long_option, double default_value, int argc, char const * argv[]);
+  bool get_boolean_command_line_option(char const * short_option, char const * long_option, bool default_value, int argc, char const * argv[]);
+  
   char const * get_texture_file_path(int argc, char const * argv[]);
   projection_method get_projection_method(int argc, char const * argv[]);
   std::size_t get_output_image_width(int argc, char const * argv[]);

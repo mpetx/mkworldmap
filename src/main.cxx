@@ -13,91 +13,86 @@ namespace mkworldmap
 {
   char const * get_command_line_option(char const * short_option, char const * long_option, int argc, char const * argv[])
   {
-    for (std::size_t i = 1; i < argc; ++i) {
+    for (std::size_t i = 1; i < argc - 1; ++i) {
       bool is_short_option = short_option && std::strcmp(argv[i], short_option) == 0;
       bool is_long_option = long_option && std::strcmp(argv[i], long_option) == 0;
       if (is_short_option || is_long_option) {
-	return i == argc - 1 ? nullptr : argv[i + 1];
+	return argv[i + 1];
       }
     }
     return nullptr;
   }
 
+  int get_integral_command_line_option(char const * short_option, char const * long_option, int default_value, int argc, char const * argv[])
+  {
+    char const * option_value = get_command_line_option(short_option, long_option, argc, argv);
+    return option_value ? std::atoi(option_value) : default_value;
+  }
+
+  double get_floating_command_line_option(char const * short_option, char const * long_option, double default_value, int argc, char const * argv[])
+  {
+    char const * option_value = get_command_line_option(short_option, long_option, argc, argv);
+    return option_value ? std::atof(option_value) : default_value;
+  }
+
+  bool get_boolean_command_line_option(char const * short_option, char const * long_option, bool default_value, int argc, char const * argv[])
+  {
+    for (std::size_t i = 1; i < argc - 1; ++i) {
+      bool is_short_option = short_option && std::strcmp(argv[i], short_option) == 0;
+      bool is_long_option = long_option && std::strcmp(argv[i], long_option) == 0;
+      if (is_short_option || is_long_option) {
+	return true;
+      }
+    }
+    return false;
+  }
+  
   char const * get_texture_file_path(int argc, char const * argv[])
   {
-    char const * default_texture_file_path = "./res/world.topo.bathy.200412.3x5400x2700.jpg";
-    char const * option = get_command_line_option("-t", "--texture", argc, argv);
-    return option ? option : default_texture_file_path;
+    char const * option_value = get_command_line_option("-t", "--texture", argc, argv);
+    return option_value ? option_value : "./res/world.topo.bathy.200412.3x5400x2700.jpg";
   }
 
   projection_method get_projection_method(int argc, char const * argv[])
   {
     char const * method = get_command_line_option("-p", "--projection", argc, argv);
-    if (!method)
-      return projection_method::invalid;
-    else if (std::strcmp(method, "equirectangular") == 0)
-      return projection_method::equirectangular;
-    else if (std::strcmp(method, "cylindrical-equal-area") == 0)
-      return projection_method::cylindrical_equal_area;
-    else if (std::strcmp(method, "mercator") == 0)
-      return projection_method::mercator;
-    else if (std::strcmp(method, "miller") == 0)
-      return projection_method::miller;
-    else
-      return projection_method::invalid;
+    return !method ? projection_method::invalid
+      : std::strcmp(method, "equirectangular") == 0 ? projection_method::equirectangular
+      : std::strcmp(method, "cylindrical-equal-area") == 0 ? projection_method::cylindrical_equal_area
+      : std::strcmp(method, "mercator") == 0 ? projection_method::mercator
+      : std::strcmp(method, "miller") == 0 ? projection_method::miller
+      : projection_method::invalid;
   }
 
   std::size_t get_output_image_width(int argc, char const * argv[])
   {
-    std::size_t const default_width = 1024;
-    char const * awidth = get_command_line_option("-w", "--width", argc, argv);
-    if (!awidth)
-      return default_width;
-    int width = std::atoi(awidth);
-    return width > 0 ? static_cast<std::size_t>(width) : default_width;
+    return get_integral_command_line_option("-w", "--width", 768, argc, argv);
   }
 
   double get_standard_longitude(int argc, char const * argv[])
   {
-    double const default_standard_longitude = 150.0;
-    char const * asl = get_command_line_option("-s", "--standard-longitude", argc, argv);
-    if (!asl)
-      return default_standard_longitude;
-    return std::atof(asl);
+    return get_floating_command_line_option("-s", "--standard-longitude", 150.0, argc, argv);
   }
 
   bool get_south_up(int argc, char const * argv[])
   {
-    bool const default_south_up = false;
-    char const * asu = get_command_line_option(nullptr, "--south-up", argc, argv);
-    if (!asu)
-      return default_south_up;
-    return !(std::strcmp(asu, "F") == 0 || std::strcmp(asu, "f") == 0 || std::strcmp(asu, "no") == 0 || std::strcmp(asu, "No") == 0 || std::strcmp(asu, "0") == 0);
+    return get_boolean_command_line_option(nullptr, "--south-up", false, argc, argv);
   }
   
   char const * get_output_path(int argc, char const * argv[])
   {
-    char const * const default_output_path = "world-map.jpg";
-    char const * path = get_command_line_option("-o", "--output", argc, argv);
-    return path ? path : default_output_path;
+    char const * option_value = get_command_line_option("-o", "--output", argc, argv);
+    return option_value ? option_value : "world-map.jpg";
   }
 
   double get_standard_latitude(int argc, char const * argv[])
   {
-    double const default_standard_latitude = 0.0;
-    char const * asl = get_command_line_option(nullptr, "--standard-latitude", argc, argv);
-    if (!asl)
-      return default_standard_latitude;
-    return std::atof(asl);
+    return get_floating_command_line_option(nullptr, "--standard-latitude", 0.0, argc, argv);
   }
 
   double get_max_latitude(int argc, char const * argv[])
   {
-    double const default_max_latitude = 80.0;
-    char const * aml = get_command_line_option(nullptr, "--max-latitude", argc, argv);
-    if (!aml)
-      return default_max_latitude;
-    return std::atof(aml);
+    return get_floating_command_line_option(nullptr, "--max-latitude", 80.0, argc, argv);
   }
 
 }
@@ -105,51 +100,39 @@ namespace mkworldmap
 int main(int argc, char const * argv[])
 {
   using namespace mkworldmap;
-  mkworldmap::earth_texture texture { get_texture_file_path(argc, argv) };
+  earth_texture texture { get_texture_file_path(argc, argv) };
   if (!texture) {
     std::cerr << "ERROR: failed to load a texture." << std::endl;
     return 1;
   }
   
-  mkworldmap::projection_method proj_method = get_projection_method(argc, argv);
+  projection_method proj_method = get_projection_method(argc, argv);
   if (proj_method == projection_method::invalid) {
     std::cerr << "ERROR: unknown projection method." << std::endl;
     return 1;
   }
-  std::unique_ptr<mkworldmap::projection> proj { };
+  std::unique_ptr<projection> proj { };
   switch (proj_method) {
   case projection_method::equirectangular: {
-    proj = std::make_unique<mkworldmap::equirectangular_projection>();
+    proj = std::make_unique<equirectangular_projection>();
   } break;
   case projection_method::cylindrical_equal_area: {
     double standard_latitude = get_standard_latitude(argc, argv);
-    if (standard_latitude <= -90 || standard_latitude >= 90) {
-      std::cerr << "ERROR: invalid standard latitude value.";
-      return 1;
-    }
-    proj = std::make_unique<mkworldmap::cylindrical_equal_area_projection>(standard_latitude * std::numbers::pi / 180);
+    proj = std::make_unique<cylindrical_equal_area_projection>(standard_latitude * std::numbers::pi / 180);
   } break;
   case projection_method::mercator: {
     double max_latitude = get_max_latitude(argc, argv);
-    if (max_latitude <= 0 || max_latitude >= 90) {
-      std::cerr << "ERROR: invalid max latitude value.";
-      return 1;
-    }
-    proj = std::make_unique<mkworldmap::mercator_projection>(max_latitude * std::numbers::pi / 180);
+    proj = std::make_unique<mercator_projection>(max_latitude * std::numbers::pi / 180);
   } break;
   case projection_method::miller: {
-    proj = std::make_unique<mkworldmap::miller_projection>();
+    proj = std::make_unique<miller_projection>();
   } break;
   }
   
   std::size_t width = get_output_image_width(argc, argv);
   double standard_longitude = get_standard_longitude(argc, argv);
-  if (standard_longitude < -180 || 180 < standard_longitude) {
-    std::cerr << "ERROR: invalid standard longitude value.";
-    return 1;
-  }
   bool south_up = get_south_up(argc, argv);
-  mkworldmap::image_creator creator { texture, *proj, width, standard_longitude * std::numbers::pi / 180, south_up };
+  image_creator creator { texture, *proj, width, standard_longitude * std::numbers::pi / 180, south_up };
 
   char const * output_path = get_output_path(argc, argv);
   creator.save_image(output_path);
