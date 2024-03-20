@@ -3,24 +3,6 @@
 
 namespace mkworldmap
 {
-  enum class projection_method
-  {
-    equirectangular,
-    cylindrical_equal_area,
-    mercator,
-    miller,
-    central_cylindrical,
-    sinusoidal,
-    mollweide,
-    azimuthal_equidistant,
-    aitoff,
-    orthographic,
-    orthographic_aitoff,
-    lambert_azimuthal_equal_area,
-    hammer,
-    gall_stereographic,
-    invalid
-  };
 
   char const * get_command_line_option(char const * short_option, char const * long_option, int argc, char const * argv[]);
   int get_integral_command_line_option(char const * short_option, char const * long_option, int default_value, int argc, char const * argv[]);

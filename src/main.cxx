@@ -123,9 +123,6 @@ int main(int argc, char const * argv[])
   }
   std::unique_ptr<projection> proj { };
   switch (proj_method) {
-  case projection_method::equirectangular: {
-    proj = std::make_unique<equirectangular_projection>();
-  } break;
   case projection_method::cylindrical_equal_area: {
     double standard_latitude = get_standard_latitude(argc, argv);
     proj = std::make_unique<cylindrical_equal_area_projection>(standard_latitude * std::numbers::pi / 180);
@@ -134,40 +131,12 @@ int main(int argc, char const * argv[])
     double max_latitude = get_max_latitude(argc, argv);
     proj = std::make_unique<mercator_projection>(max_latitude * std::numbers::pi / 180);
   } break;
-  case projection_method::miller: {
-    proj = std::make_unique<miller_projection>();
-  } break;
   case projection_method::central_cylindrical: {
     double max_latitude = get_max_latitude(argc, argv);
     proj = std::make_unique<central_cylindrical_projection>(max_latitude * std::numbers::pi / 180);
   } break;
-  case projection_method::sinusoidal: {
-    proj = std::make_unique<sinusoidal_projection>();
-  } break;
-  case projection_method::mollweide: {
-    proj = std::make_unique<mollweide_projection>();
-  } break;
-  case projection_method::azimuthal_equidistant: {
-    proj = std::make_unique<azimuthal_equidistant_projection>();
-  } break;
-  case projection_method::aitoff: {
-    proj = std::make_unique<aitoff_projection>();
-  } break;
-  case projection_method::orthographic: {
-    proj = std::make_unique<orthographic_projection>();
-  } break;
-  case projection_method::orthographic_aitoff: {
-    proj = std::make_unique<orthographic_aitoff_projection>();
-  } break;
-  case projection_method::lambert_azimuthal_equal_area: {
-    proj = std::make_unique<lambert_azimuthal_equal_area_projection>();
-  } break;
-  case projection_method::hammer: {
-    proj = std::make_unique<hammer_projection>();
-  } break;
-  case projection_method::gall_stereographic: {
-    proj = std::make_unique<gall_stereographic_projection>();
-  } break;
+  default:
+    proj = make_simple_projection(proj_method);
   }
   
   std::size_t width = get_output_image_width(argc, argv);

@@ -1,10 +1,31 @@
 #ifndef MKWORLDMAP_PROJECTION_HXX_2024_03_18_K7DXVLGVC2LT
 #define MKWORLDMAP_PROJECTION_HXX_2024_03_18_K7DXVLGVC2LT
 
+#include <memory>
+
 #include "util.hxx"
 
 namespace mkworldmap
 {
+  
+  enum class projection_method
+  {
+    equirectangular,
+    cylindrical_equal_area,
+    mercator,
+    miller,
+    central_cylindrical,
+    sinusoidal,
+    mollweide,
+    azimuthal_equidistant,
+    aitoff,
+    orthographic,
+    orthographic_aitoff,
+    lambert_azimuthal_equal_area,
+    hammer,
+    gall_stereographic,
+    invalid
+  };
 
   class projection
   {
@@ -28,19 +49,21 @@ namespace mkworldmap
     virtual point invert(double, double) const = 0;
   };
 
-  class equirectangular_projection : public projection
+  template <projection_method type>
+  class simple_projection : public projection
   {
-
   public:
-    equirectangular_projection();
-    equirectangular_projection(equirectangular_projection const &) = default;
-    equirectangular_projection(equirectangular_projection &&) = default;
-    equirectangular_projection & operator=(equirectangular_projection const &) = default;
-    equirectangular_projection & operator=(equirectangular_projection &&) = default;
+    simple_projection();
+    simple_projection(simple_projection const &) = default;
+    simple_projection(simple_projection &&) = default;
+    simple_projection & operator=(simple_projection const &) = default;
+    simple_projection & operator=(simple_projection &&) = default;
 
     point invert(double, double) const override;
   };
 
+  std::unique_ptr<projection> make_simple_projection(projection_method);
+  
   class cylindrical_equal_area_projection : public projection
   {
 
@@ -74,18 +97,6 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
-  class miller_projection : public projection
-  {
-  public:
-    miller_projection();
-    miller_projection(miller_projection const &) = default;
-    miller_projection(miller_projection &&) = default;
-    miller_projection & operator=(miller_projection const &) = default;
-    miller_projection & operator=(miller_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
   class central_cylindrical_projection : public projection
   {
     double max_latitude;
@@ -97,114 +108,6 @@ namespace mkworldmap
     central_cylindrical_projection & operator=(central_cylindrical_projection const &) = default;
     central_cylindrical_projection & operator=(central_cylindrical_projection &&) = default;
     central_cylindrical_projection(double);
-    
-    point invert(double, double) const override;
-  };
-
-  class sinusoidal_projection : public projection
-  {
-  public:
-    sinusoidal_projection();
-    sinusoidal_projection(sinusoidal_projection const &) = default;
-    sinusoidal_projection(sinusoidal_projection &&) = default;
-    sinusoidal_projection & operator=(sinusoidal_projection const &) = default;
-    sinusoidal_projection & operator=(sinusoidal_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class mollweide_projection : public projection
-  {
-  public:
-    mollweide_projection();
-    mollweide_projection(mollweide_projection const &) = default;
-    mollweide_projection(mollweide_projection &&) = default;
-    mollweide_projection & operator=(mollweide_projection const &) = default;
-    mollweide_projection & operator=(mollweide_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class azimuthal_equidistant_projection : public projection
-  {
-  public:
-    azimuthal_equidistant_projection();
-    azimuthal_equidistant_projection(azimuthal_equidistant_projection const &) = default;
-    azimuthal_equidistant_projection(azimuthal_equidistant_projection &&) = default;
-    azimuthal_equidistant_projection & operator=(azimuthal_equidistant_projection const &) = default;
-    azimuthal_equidistant_projection & operator=(azimuthal_equidistant_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class aitoff_projection : public projection
-  {
-  public:
-    aitoff_projection();
-    aitoff_projection(aitoff_projection const &) = default;
-    aitoff_projection(aitoff_projection &&) = default;
-    aitoff_projection & operator=(aitoff_projection const &) = default;
-    aitoff_projection & operator=(aitoff_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class orthographic_projection : public projection
-  {
-  public:
-    orthographic_projection();
-    orthographic_projection(orthographic_projection const &) = default;
-    orthographic_projection(orthographic_projection &&) = default;
-    orthographic_projection & operator=(orthographic_projection const &) = default;
-    orthographic_projection & operator=(orthographic_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class orthographic_aitoff_projection : public projection
-  {
-  public:
-    orthographic_aitoff_projection();
-    orthographic_aitoff_projection(orthographic_aitoff_projection const &) = default;
-    orthographic_aitoff_projection(orthographic_aitoff_projection &&) = default;
-    orthographic_aitoff_projection & operator=(orthographic_aitoff_projection const &) = default;
-    orthographic_aitoff_projection & operator=(orthographic_aitoff_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class lambert_azimuthal_equal_area_projection : public projection
-  {
-  public:
-    lambert_azimuthal_equal_area_projection();
-    lambert_azimuthal_equal_area_projection(lambert_azimuthal_equal_area_projection const &) = default;
-    lambert_azimuthal_equal_area_projection(lambert_azimuthal_equal_area_projection &&) = default;
-    lambert_azimuthal_equal_area_projection & operator=(lambert_azimuthal_equal_area_projection const &) = default;
-    lambert_azimuthal_equal_area_projection & operator=(lambert_azimuthal_equal_area_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class hammer_projection : public projection
-  {
-  public:
-    hammer_projection();
-    hammer_projection(hammer_projection const &) = default;
-    hammer_projection(hammer_projection &&) = default;
-    hammer_projection & operator=(hammer_projection const &) = default;
-    hammer_projection & operator=(hammer_projection &&) = default;
-    
-    point invert(double, double) const override;
-  };
-
-  class gall_stereographic_projection : public projection
-  {
-  public:
-    gall_stereographic_projection();
-    gall_stereographic_projection(gall_stereographic_projection const &) = default;
-    gall_stereographic_projection(gall_stereographic_projection &&) = default;
-    gall_stereographic_projection & operator=(gall_stereographic_projection const &) = default;
-    gall_stereographic_projection & operator=(gall_stereographic_projection &&) = default;
     
     point invert(double, double) const override;
   };
