@@ -37,6 +37,12 @@ mkworldmap OPTIONS
 | `lambert-azimuthal-equal-area` | ランベルト正積方位図法 |
 | `hammer` | ハンメル図法 |
 | `gall-stereographic` | ゴール平射図法 |
+| `eckert-1` | エケルト第一図法 |
+| `eckert-2` | エケルト第二図法 |
+| `eckert-3` | エケルト第三図法 |
+| `eckert-4` | エケルト第四図法 |
+| `eckert-5` | エケルト第五図法 |
+| `eckert-6` | エケルト第六図法 |
 
 経度と緯度の範囲は次の通りです。
 

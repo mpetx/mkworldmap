@@ -71,6 +71,12 @@ namespace mkworldmap
       : std::strcmp(method, "lambert-azimuthal-equal-area") == 0 ? projection_method::lambert_azimuthal_equal_area
       : std::strcmp(method, "hammer") == 0 ? projection_method::hammer
       : std::strcmp(method, "gall-stereographic") == 0 ? projection_method::gall_stereographic
+      : std::strcmp(method, "eckert-1") == 0 ? projection_method::eckert_1
+      : std::strcmp(method, "eckert-2") == 0 ? projection_method::eckert_2
+      : std::strcmp(method, "eckert-3") == 0 ? projection_method::eckert_3
+      : std::strcmp(method, "eckert-4") == 0 ? projection_method::eckert_4
+      : std::strcmp(method, "eckert-5") == 0 ? projection_method::eckert_5
+      : std::strcmp(method, "eckert-6") == 0 ? projection_method::eckert_6
       : projection_method::invalid;
   }
 

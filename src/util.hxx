@@ -35,6 +35,18 @@ namespace mkworldmap
       std::atan2(z, std::sqrt(x * x + y * y))
     };
   }
+
+  template <typename T>
+  T sign(T x)
+  {
+    if (x > 0)
+      return static_cast<T>(1);
+    else if (x < 0)
+      return static_cast<T>(-1);
+    else
+      return 0;
+  }
+  
 }
 
 #endif

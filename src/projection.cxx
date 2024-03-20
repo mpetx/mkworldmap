@@ -3,6 +3,7 @@
 #include <numbers>
 
 #include "projection.hxx"
+#include "util.hxx"
 
 namespace mkworldmap
 {
@@ -51,6 +52,18 @@ namespace mkworldmap
       return std::make_unique<simple_projection<hammer>>();
     case gall_stereographic:
       return std::make_unique<simple_projection<gall_stereographic>>();
+    case eckert_1:
+      return std::make_unique<simple_projection<eckert_1>>();
+    case eckert_2:
+      return std::make_unique<simple_projection<eckert_2>>();
+    case eckert_3:
+      return std::make_unique<simple_projection<eckert_3>>();
+    case eckert_4:
+      return std::make_unique<simple_projection<eckert_4>>();
+    case eckert_5:
+      return std::make_unique<simple_projection<eckert_5>>();
+    case eckert_6:
+      return std::make_unique<simple_projection<eckert_6>>();
     }
     return std::unique_ptr<projection> { };
   }
@@ -362,6 +375,137 @@ namespace mkworldmap
     return point {
       x,
       2 * std::atan(y / (std::sqrt(2) + 1))
+    };
+  }
+
+  template <>
+  simple_projection<projection_method::eckert_1>::simple_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::numbers::pi * 0.5,
+	std::numbers::pi * 0.5
+      }
+  {
+  }
+
+  template <>
+  point simple_projection<projection_method::eckert_1>::invert(double x, double y) const
+  {
+    double factor = 1 - std::abs(y) / std::numbers::pi;
+    if (x < -std::numbers::pi * factor || x > std::numbers::pi * factor)
+      return point { std::nan(""), std::nan("") };
+    return point { x / factor, y };
+  }
+
+  template <>
+  simple_projection<projection_method::eckert_2>::simple_projection()
+    : projection { -2, 2, -1, 1 }
+  {
+  }
+
+  template <>
+  point simple_projection<projection_method::eckert_2>::invert(double x, double y) const
+  {
+    double factor = 2 - std::abs(y);
+    if (x < -factor || x > factor)
+      return point { std::nan(""), std::nan("") };
+    return point {
+      x * std::numbers::pi / factor,
+      sign(y) * std::asin((4 - factor * factor) / 3)
+    };
+  }
+
+  template <>
+  simple_projection<projection_method::eckert_3>::simple_projection()
+    : projection {
+	-2 * std::numbers::pi,
+	2 * std::numbers::pi,
+	-std::numbers::pi,
+	std::numbers::pi
+      }
+  {
+  }
+
+  template <>
+  point simple_projection<projection_method::eckert_3>::invert(double x, double y) const
+  {
+    double factor = 1 + std::sqrt(1 - y * y / (std::numbers::pi * std::numbers::pi));
+    if (x < -std::numbers::pi * factor || x > std::numbers::pi * factor)
+      return point { std::nan(""), std::nan("") };
+    return point {
+      x / factor,
+      y / 2
+    };
+  }
+
+  template <>
+  simple_projection<projection_method::eckert_4>::simple_projection()
+    : projection {
+	-2 * std::numbers::pi,
+	2 * std::numbers::pi,
+	-std::numbers::pi,
+	std::numbers::pi
+      }
+  {
+  }
+
+  template <>
+  point simple_projection<projection_method::eckert_4>::invert(double x, double y) const
+  {
+    double param = std::asin(y / std::numbers::pi);
+    double factor = 1 + std::cos(param);
+    if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
+      return point { std::nan(""), std::nan("") };
+    return point {
+      x / factor,
+      std::asin((param + std::sin(param) * std::cos(param) + 2 * std::sin(param)) / (2 + std::numbers::pi / 2))
+    };
+  }
+
+  template <>
+  simple_projection<projection_method::eckert_5>::simple_projection()
+    : projection {
+	-2 * std::numbers::pi,
+	2 * std::numbers::pi,
+	-std::numbers::pi,
+	std::numbers::pi
+      }
+  {
+  }
+
+  template <>
+  point simple_projection<projection_method::eckert_5>::invert(double x, double y) const
+  {
+    double factor = 1 + std::cos(y / 2);
+    if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
+      return point { std::nan(""), std::nan("") };
+    return point {
+      x / factor,
+      y / 2
+    };
+  }
+
+  template <>
+  simple_projection<projection_method::eckert_6>::simple_projection()
+    : projection {
+	-2 * std::numbers::pi,
+	2 * std::numbers::pi,
+	-std::numbers::pi,
+	std::numbers::pi
+      }
+  {
+  }
+
+  template <>
+  point simple_projection<projection_method::eckert_6>::invert(double x, double y) const
+  {
+    double factor = 1 + std::cos(y / 2);
+    if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
+      return point { std::nan(""), std::nan("") };
+    return point {
+      x / factor,
+      std::asin((y / 2 + std::sin(y / 2)) / (1 + std::numbers::pi / 2))
     };
   }
 

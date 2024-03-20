@@ -24,6 +24,12 @@ namespace mkworldmap
     lambert_azimuthal_equal_area,
     hammer,
     gall_stereographic,
+    eckert_1,
+    eckert_2,
+    eckert_3,
+    eckert_4,
+    eckert_5,
+    eckert_6,
     invalid
   };
 
