@@ -14,6 +14,8 @@ namespace mkworldmap
     mollweide,
     azimuthal_equidistant,
     aitoff,
+    orthographic,
+    orthographic_aitoff,
     invalid
   };
 

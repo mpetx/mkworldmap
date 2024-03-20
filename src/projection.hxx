@@ -149,6 +149,30 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
+  class orthographic_projection : public projection
+  {
+  public:
+    orthographic_projection();
+    orthographic_projection(orthographic_projection const &) = default;
+    orthographic_projection(orthographic_projection &&) = default;
+    orthographic_projection & operator=(orthographic_projection const &) = default;
+    orthographic_projection & operator=(orthographic_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
+  class orthographic_aitoff_projection : public projection
+  {
+  public:
+    orthographic_aitoff_projection();
+    orthographic_aitoff_projection(orthographic_aitoff_projection const &) = default;
+    orthographic_aitoff_projection(orthographic_aitoff_projection &&) = default;
+    orthographic_aitoff_projection & operator=(orthographic_aitoff_projection const &) = default;
+    orthographic_aitoff_projection & operator=(orthographic_aitoff_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
 }
 
 #endif

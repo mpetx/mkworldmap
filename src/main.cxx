@@ -66,6 +66,8 @@ namespace mkworldmap
       : std::strcmp(method, "mollweide") == 0 ? projection_method::mollweide
       : std::strcmp(method, "azimuthal-equidistant") == 0 ? projection_method::azimuthal_equidistant
       : std::strcmp(method, "aitoff") == 0 ? projection_method::aitoff
+      : std::strcmp(method, "orthographic") == 0 ? projection_method::orthographic
+      : std::strcmp(method, "orthographic-aitoff") == 0 ? projection_method::orthographic_aitoff
       : projection_method::invalid;
   }
 
@@ -147,6 +149,12 @@ int main(int argc, char const * argv[])
   } break;
   case projection_method::aitoff: {
     proj = std::make_unique<aitoff_projection>();
+  } break;
+  case projection_method::orthographic: {
+    proj = std::make_unique<orthographic_projection>();
+  } break;
+  case projection_method::orthographic_aitoff: {
+    proj = std::make_unique<orthographic_aitoff_projection>();
   } break;
   }
   

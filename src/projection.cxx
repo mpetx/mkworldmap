@@ -215,4 +215,41 @@ namespace mkworldmap
     p.x *= 2;
     return p;
   }
+
+  orthographic_projection::orthographic_projection()
+  : projection {
+    -1, 1, -1, 1
+  }
+  {
+  }
+
+  point orthographic_invert(double x, double y)
+  {
+    if (x * x + y * y > 1)
+      return point { std::nan(""), std::nan("") };
+    return point {
+      std::asin(x / std::sqrt(1 - y * y)),
+      std::asin(y)
+    };
+  }
+  
+  point orthographic_projection::invert(double x, double y) const
+  {
+    return orthographic_invert(x, y);
+  }
+
+  orthographic_aitoff_projection::orthographic_aitoff_projection()
+  : projection {
+    -2, 2, -1, 1
+  }
+  {
+  }
+  
+  point orthographic_aitoff_projection::invert(double x, double y) const
+  {
+    point p = orthographic_invert(x * 0.5, y);
+    p.x *= 2;
+    return p;
+  }
+
 }
