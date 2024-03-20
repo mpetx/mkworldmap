@@ -173,6 +173,30 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
+  class lambert_azimuthal_equal_area_projection : public projection
+  {
+  public:
+    lambert_azimuthal_equal_area_projection();
+    lambert_azimuthal_equal_area_projection(lambert_azimuthal_equal_area_projection const &) = default;
+    lambert_azimuthal_equal_area_projection(lambert_azimuthal_equal_area_projection &&) = default;
+    lambert_azimuthal_equal_area_projection & operator=(lambert_azimuthal_equal_area_projection const &) = default;
+    lambert_azimuthal_equal_area_projection & operator=(lambert_azimuthal_equal_area_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
+  class hammer_projection : public projection
+  {
+  public:
+    hammer_projection();
+    hammer_projection(hammer_projection const &) = default;
+    hammer_projection(hammer_projection &&) = default;
+    hammer_projection & operator=(hammer_projection const &) = default;
+    hammer_projection & operator=(hammer_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
 }
 
 #endif

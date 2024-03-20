@@ -252,4 +252,41 @@ namespace mkworldmap
     return p;
   }
 
+  lambert_azimuthal_equal_area_projection::lambert_azimuthal_equal_area_projection()
+    : projection { -2, 2, -2, 2 }
+  {
+  }
+
+  point laea_invert(double x, double y, double range)
+  {
+    double r = std::sqrt(x * x + y * y);
+    double nr = 2 * std::asin(r / 2.0);
+    if (nr > range)
+      return point { std::nan(""), std::nan("") };
+    double theta = std::atan2(y, x);
+    double ny = std::cos(theta + std::numbers::pi * 0.5);
+    double nz = std::sin(theta + std::numbers::pi * 0.5);
+    double x3 = std::cos(nr);
+    double y3 = nz * std::sin(nr);
+    double z3 = -ny * std::sin(nr);
+    return spacial_point_to_point(x3, y3, z3);
+  }
+  
+  point lambert_azimuthal_equal_area_projection::invert(double x, double y) const
+  {
+    return laea_invert(x, y, std::numbers::pi);
+  }
+
+  hammer_projection::hammer_projection()
+    : projection { -2 * std::sqrt(2), 2 * std::sqrt(2), -std::sqrt(2), std::sqrt(2) }
+  {
+  }
+
+  point hammer_projection::invert(double x, double y) const
+  {
+    point p = laea_invert(x * 0.5, y, std::numbers::pi * 0.5);
+    p.x *= 2;
+    return p;
+  }
+
 }
