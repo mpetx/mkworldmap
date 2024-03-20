@@ -1,6 +1,8 @@
 #ifndef MKWORLDMAP_UTIL_HXX_2024_03_18_26AWGQH5NJ4S
 #define MKWORLDMAP_UTIL_HXX_2024_03_18_26AWGQH5NJ4S
 
+#include <cmath>
+
 namespace mkworldmap
 {
   struct color
@@ -24,6 +26,14 @@ namespace mkworldmap
       return upper_bound;
     else
       return x;
+  }
+
+  inline point spacial_point_to_point(double x, double y, double z)
+  {
+    return point {
+      std::atan2(y, x),
+      std::atan2(z, std::sqrt(x * x + y * y))
+    };
   }
 }
 

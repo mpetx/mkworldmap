@@ -12,6 +12,8 @@ namespace mkworldmap
     central_cylindrical,
     sinusoidal,
     mollweide,
+    azimuthal_equidistant,
+    aitoff,
     invalid
   };
 

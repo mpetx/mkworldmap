@@ -64,6 +64,8 @@ namespace mkworldmap
       : std::strcmp(method, "central-cylindrical") == 0 ? projection_method::central_cylindrical
       : std::strcmp(method, "sinusoidal") == 0 ? projection_method::sinusoidal
       : std::strcmp(method, "mollweide") == 0 ? projection_method::mollweide
+      : std::strcmp(method, "azimuthal-equidistant") == 0 ? projection_method::azimuthal_equidistant
+      : std::strcmp(method, "aitoff") == 0 ? projection_method::aitoff
       : projection_method::invalid;
   }
 
@@ -139,6 +141,12 @@ int main(int argc, char const * argv[])
   } break;
   case projection_method::mollweide: {
     proj = std::make_unique<mollweide_projection>();
+  } break;
+  case projection_method::azimuthal_equidistant: {
+    proj = std::make_unique<azimuthal_equidistant_projection>();
+  } break;
+  case projection_method::aitoff: {
+    proj = std::make_unique<aitoff_projection>();
   } break;
   }
   

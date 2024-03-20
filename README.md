@@ -30,6 +30,8 @@ mkworldmap OPTIONS
 | `central-cylindrical` | 心射円筒図法 |
 | `sinusoidal` | サンソン図法 |
 | `mollweide` | モルワイデ図法 |
+| `azimuthal-equidistant` | 正距方位図法 |
+| `aitoff` | エイトフ図法 |
 
 経度と緯度の範囲は次の通りです。
 

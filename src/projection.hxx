@@ -124,7 +124,31 @@ namespace mkworldmap
     
     point invert(double, double) const override;
   };
-  
+
+  class azimuthal_equidistant_projection : public projection
+  {
+  public:
+    azimuthal_equidistant_projection();
+    azimuthal_equidistant_projection(azimuthal_equidistant_projection const &) = default;
+    azimuthal_equidistant_projection(azimuthal_equidistant_projection &&) = default;
+    azimuthal_equidistant_projection & operator=(azimuthal_equidistant_projection const &) = default;
+    azimuthal_equidistant_projection & operator=(azimuthal_equidistant_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
+  class aitoff_projection : public projection
+  {
+  public:
+    aitoff_projection();
+    aitoff_projection(aitoff_projection const &) = default;
+    aitoff_projection(aitoff_projection &&) = default;
+    aitoff_projection & operator=(aitoff_projection const &) = default;
+    aitoff_projection & operator=(aitoff_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
 }
 
 #endif

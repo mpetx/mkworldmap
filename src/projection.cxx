@@ -169,5 +169,50 @@ namespace mkworldmap
     double lat = std::asin((std::sin(2 * param) + 2 * param) / std::numbers::pi);
     return point { lon, lat };
   }
+
+  azimuthal_equidistant_projection::azimuthal_equidistant_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::numbers::pi,
+	std::numbers::pi
+      }
+  {
+  }
+
+  point azeq_invert(double x, double y, double range)
+  {
+    double r = std::sqrt(x * x + y * y);
+    if (r > range)
+      return point { std::nan(""), std::nan("") };
+    double theta = std::atan2(y, x);
+    double ny = std::cos(theta + std::numbers::pi * 0.5);
+    double nz = std::sin(theta + std::numbers::pi * 0.5);
+    double x3 = std::cos(r);
+    double y3 = nz * std::sin(r);
+    double z3 = -ny * std::sin(r);
+    return spacial_point_to_point(x3, y3, z3);
+  }
   
+  point azimuthal_equidistant_projection::invert(double x, double y) const
+  {
+    return azeq_invert(x, y, std::numbers::pi);
+  }
+
+  aitoff_projection::aitoff_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::numbers::pi * 0.5,
+	std::numbers::pi * 0.5
+      }
+  {
+  }
+
+  point aitoff_projection::invert(double x, double y) const
+  {
+    point p = azeq_invert(x * 0.5, y, std::numbers::pi * 0.5);
+    p.x *= 2;
+    return p;
+  }
 }
