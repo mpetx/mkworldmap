@@ -18,6 +18,7 @@ namespace mkworldmap
     orthographic_aitoff,
     lambert_azimuthal_equal_area,
     hammer,
+    gall_stereographic,
     invalid
   };
 

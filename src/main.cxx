@@ -70,6 +70,7 @@ namespace mkworldmap
       : std::strcmp(method, "orthographic-aitoff") == 0 ? projection_method::orthographic_aitoff
       : std::strcmp(method, "lambert-azimuthal-equal-area") == 0 ? projection_method::lambert_azimuthal_equal_area
       : std::strcmp(method, "hammer") == 0 ? projection_method::hammer
+      : std::strcmp(method, "gall-stereographic") == 0 ? projection_method::gall_stereographic
       : projection_method::invalid;
   }
 
@@ -163,6 +164,9 @@ int main(int argc, char const * argv[])
   } break;
   case projection_method::hammer: {
     proj = std::make_unique<hammer_projection>();
+  } break;
+  case projection_method::gall_stereographic: {
+    proj = std::make_unique<gall_stereographic_projection>();
   } break;
   }
   

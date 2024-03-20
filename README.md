@@ -36,6 +36,7 @@ mkworldmap OPTIONS
 | `orthographic-aitoff` | 正射エイトフ図法 |
 | `lambert-azimuthal-equal-area` | ランベルト正積方位図法 |
 | `hammer` | ハンメル図法 |
+| `gall-stereographic` | ゴール平射図法 |
 
 経度と緯度の範囲は次の通りです。
 

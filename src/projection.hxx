@@ -197,6 +197,18 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
+  class gall_stereographic_projection : public projection
+  {
+  public:
+    gall_stereographic_projection();
+    gall_stereographic_projection(gall_stereographic_projection const &) = default;
+    gall_stereographic_projection(gall_stereographic_projection &&) = default;
+    gall_stereographic_projection & operator=(gall_stereographic_projection const &) = default;
+    gall_stereographic_projection & operator=(gall_stereographic_projection &&) = default;
+    
+    point invert(double, double) const override;
+  };
+
 }
 
 #endif

@@ -289,4 +289,21 @@ namespace mkworldmap
     return p;
   }
 
+  gall_stereographic_projection::gall_stereographic_projection()
+    : projection {
+	-std::numbers::pi,
+	std::numbers::pi,
+	-std::sqrt(2) - 1,
+	std::sqrt(2) + 1
+      }
+  {
+  }
+
+  point gall_stereographic_projection::invert(double x, double y) const
+  {
+    return point {
+      x,
+      2 * std::atan(y / (std::sqrt(2) + 1))
+    };
+  }
 }
