@@ -26,61 +26,145 @@ namespace mkworldmap
     return y_max - y_min;
   }
 
+  singleton_projection::singleton_projection(double x_min, double x_max, double y_min, double y_max, point (*inverter)(double, double))
+    : inverter { inverter },
+      projection { x_min, x_max, y_min, y_max }
+  {
+  }
+
+  point singleton_projection::invert(double x, double y) const
+  {
+    return inverter(x, y);
+  }
+  
   std::unique_ptr<projection> make_simple_projection(projection_method method)
   {
     using enum projection_method;
     switch (method) {
     case equirectangular:
-      return std::make_unique<simple_projection<equirectangular>>();
+      return std::make_unique<singleton_projection>
+	(equirectangular_x_min,
+	 equirectangular_x_max,
+	 equirectangular_y_min,
+	 equirectangular_y_max,
+	 equirectangular_invert);
     case miller:
-      return std::make_unique<simple_projection<miller>>();
+      return std::make_unique<singleton_projection>
+	(miller_x_min,
+	 miller_x_max,
+	 miller_y_min,
+	 miller_y_max,
+	 miller_invert);
     case sinusoidal:
-      return std::make_unique<simple_projection<sinusoidal>>();
+      return std::make_unique<singleton_projection>
+	(sinusoidal_x_min,
+	 sinusoidal_x_max,
+	 sinusoidal_y_min,
+	 sinusoidal_y_max,
+	 sinusoidal_invert);
     case mollweide:
-      return std::make_unique<simple_projection<mollweide>>();
+      return std::make_unique<singleton_projection>
+	(mollweide_x_min,
+	 mollweide_x_max,
+	 mollweide_y_min,
+	 mollweide_y_max,
+	 mollweide_invert);
     case azimuthal_equidistant:
-      return std::make_unique<simple_projection<azimuthal_equidistant>>();
+      return std::make_unique<singleton_projection>
+	(azimuthal_equidistant_x_min,
+	 azimuthal_equidistant_x_max,
+	 azimuthal_equidistant_y_min,
+	 azimuthal_equidistant_y_max,
+	 azimuthal_equidistant_invert);
     case aitoff:
-      return std::make_unique<simple_projection<aitoff>>();
+      return std::make_unique<singleton_projection>
+	(aitoff_x_min,
+	 aitoff_x_max,
+	 aitoff_y_min,
+	 aitoff_y_max,
+	 aitoff_invert);
     case orthographic:
-      return std::make_unique<simple_projection<orthographic>>();
+      return std::make_unique<singleton_projection>
+	(orthographic_x_min,
+	 orthographic_x_max,
+	 orthographic_y_min,
+	 orthographic_y_max,
+	 orthographic_invert);
     case orthographic_aitoff:
-      return std::make_unique<simple_projection<orthographic_aitoff>>();
+      return std::make_unique<singleton_projection>
+	(orthographic_aitoff_x_min,
+	 orthographic_aitoff_x_max,
+	 orthographic_aitoff_y_min,
+	 orthographic_aitoff_y_max,
+	 orthographic_aitoff_invert);
     case lambert_azimuthal_equal_area:
-      return std::make_unique<simple_projection<lambert_azimuthal_equal_area>>();
+      return std::make_unique<singleton_projection>
+	(lambert_azimuthal_equal_area_x_min,
+	 lambert_azimuthal_equal_area_x_max,
+	 lambert_azimuthal_equal_area_y_min,
+	 lambert_azimuthal_equal_area_y_max,
+	 lambert_azimuthal_equal_area_invert);
     case hammer:
-      return std::make_unique<simple_projection<hammer>>();
+      return std::make_unique<singleton_projection>
+	(hammer_x_min,
+	 hammer_x_max,
+	 hammer_y_min,
+	 hammer_y_max,
+	 hammer_invert);
     case gall_stereographic:
-      return std::make_unique<simple_projection<gall_stereographic>>();
+      return std::make_unique<singleton_projection>
+	(gall_stereographic_x_min,
+	 gall_stereographic_x_max,
+	 gall_stereographic_y_min,
+	 gall_stereographic_y_max,
+	 gall_stereographic_invert);
     case eckert_1:
-      return std::make_unique<simple_projection<eckert_1>>();
+      return std::make_unique<singleton_projection>
+	(eckert_1_x_min,
+	 eckert_1_x_max,
+	 eckert_1_y_min,
+	 eckert_1_y_max,
+	 eckert_1_invert);
     case eckert_2:
-      return std::make_unique<simple_projection<eckert_2>>();
+      return std::make_unique<singleton_projection>
+	(eckert_2_x_min,
+	 eckert_2_x_max,
+	 eckert_2_y_min,
+	 eckert_2_y_max,
+	 eckert_2_invert);
     case eckert_3:
-      return std::make_unique<simple_projection<eckert_3>>();
+      return std::make_unique<singleton_projection>
+	(eckert_3_x_min,
+	 eckert_3_x_max,
+	 eckert_3_y_min,
+	 eckert_3_y_max,
+	 eckert_3_invert);
     case eckert_4:
-      return std::make_unique<simple_projection<eckert_4>>();
+      return std::make_unique<singleton_projection>
+	(eckert_4_x_min,
+	 eckert_4_x_max,
+	 eckert_4_y_min,
+	 eckert_4_y_max,
+	 eckert_4_invert);
     case eckert_5:
-      return std::make_unique<simple_projection<eckert_5>>();
+      return std::make_unique<singleton_projection>
+	(eckert_5_x_min,
+	 eckert_5_x_max,
+	 eckert_5_y_min,
+	 eckert_5_y_max,
+	 eckert_5_invert);
     case eckert_6:
-      return std::make_unique<simple_projection<eckert_6>>();
+      return std::make_unique<singleton_projection>
+	(eckert_6_x_min,
+	 eckert_6_x_max,
+	 eckert_6_y_min,
+	 eckert_6_y_max,
+	 eckert_6_invert);
     }
     return std::unique_ptr<projection> { };
   }
 
-  template <>
-  simple_projection<projection_method::equirectangular>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::numbers::pi * 0.5,
-	std::numbers::pi * 0.5
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::equirectangular>::invert(double x, double y) const
+  point equirectangular_invert(double x, double y)
   {
     return point { x, y };
   }
@@ -109,16 +193,6 @@ namespace mkworldmap
     };
   }
 
-  double gudermann(double x)
-  {
-    return std::asin(std::tanh(x));
-  }
-
-  double inverse_gudermann(double x)
-  {
-    return std::atanh(std::sin(x));
-  }
-  
   mercator_projection::mercator_projection(double max_latitude_)
     : max_latitude { max_latitude_ },
       projection {
@@ -138,19 +212,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::miller>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-1.25 * inverse_gudermann(0.4 * std::numbers::pi),
-	1.25 * inverse_gudermann(0.4 * std::numbers::pi)
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::miller>::invert(double x, double y) const
+  point miller_invert(double x, double y)
   {
     return point {
       x,
@@ -177,19 +239,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::sinusoidal>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::numbers::pi * 0.5,
-	std::numbers::pi * 0.5
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::sinusoidal>::invert(double x, double y) const
+  point sinusoidal_invert(double x, double y)
   {
     double cos = std::cos(y);
     if (x < -std::numbers::pi * cos || x > std::numbers::pi * cos)
@@ -198,19 +248,7 @@ namespace mkworldmap
       return point { x / cos, y };
   }
 
-  template <>
-  simple_projection<projection_method::mollweide>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::numbers::pi * 0.5,
-	std::numbers::pi * 0.5
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::mollweide>::invert(double x, double y) const
+  point mollweide_invert(double x, double y)
   {
     double param = std::asin(y * 2 / std::numbers::pi);
     double lon = x / std::cos(param);
@@ -218,17 +256,6 @@ namespace mkworldmap
       return point { std::nan(""), std::nan("") };
     double lat = std::asin((std::sin(2 * param) + 2 * param) / std::numbers::pi);
     return point { lon, lat };
-  }
-
-  template <>
-  simple_projection<projection_method::azimuthal_equidistant>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::numbers::pi,
-	std::numbers::pi
-      }
-  {
   }
 
   point azeq_invert(double x, double y, double range)
@@ -245,37 +272,16 @@ namespace mkworldmap
     return spacial_point_to_point(x3, y3, z3);
   }
 
-  template <>
-  point simple_projection<projection_method::azimuthal_equidistant>::invert(double x, double y) const
+  point azimuthal_equidistant_invert(double x, double y)
   {
     return azeq_invert(x, y, std::numbers::pi);
   }
 
-  template <>
-  simple_projection<projection_method::aitoff>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::numbers::pi * 0.5,
-	std::numbers::pi * 0.5
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::aitoff>::invert(double x, double y) const
+  point aitoff_invert(double x, double y)
   {
     point p = azeq_invert(x * 0.5, y, std::numbers::pi * 0.5);
     p.x *= 2;
     return p;
-  }
-
-  template <>
-  simple_projection<projection_method::orthographic>::simple_projection()
-    : projection {
-	-1, 1, -1, 1
-      }
-  {
   }
 
   point orthographic_invert(double x, double y)
@@ -288,34 +294,11 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  point simple_projection<projection_method::orthographic>::invert(double x, double y) const
-  {
-    return orthographic_invert(x, y);
-  }
-
-  template <>
-  simple_projection<projection_method::orthographic_aitoff>::simple_projection()
-    : projection {
-	-2, 2, -1, 1
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::orthographic_aitoff>::invert(double x, double y) const
+  point orthographic_aitoff_invert(double x, double y)
   {
     point p = orthographic_invert(x * 0.5, y);
     p.x *= 2;
     return p;
-  }
-
-  template <>
-  simple_projection<projection_method::lambert_azimuthal_equal_area>::simple_projection()
-    : projection {
-	-2, 2, -2, 2
-      }
-  {
   }
 
   point laea_invert(double x, double y, double range)
@@ -333,44 +316,19 @@ namespace mkworldmap
     return spacial_point_to_point(x3, y3, z3);
   }
 
-  template <>
-  point simple_projection<projection_method::lambert_azimuthal_equal_area>::invert(double x, double y) const
+  point lambert_azimuthal_equal_area_invert(double x, double y)
   {
     return laea_invert(x, y, std::numbers::pi);
   }
 
-  template <>
-  simple_projection<projection_method::hammer>::simple_projection()
-    : projection {
-	-2 * std::sqrt(2),
-	2 * std::sqrt(2),
-	-std::sqrt(2),
-	std::sqrt(2)
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::hammer>::invert(double x, double y) const
+  point hammer_invert(double x, double y)
   {
     point p = laea_invert(x * 0.5, y, std::numbers::pi * 0.5);
     p.x *= 2;
     return p;
   }
 
-  template <>
-  simple_projection<projection_method::gall_stereographic>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::sqrt(2) - 1,
-	std::sqrt(2) + 1
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::gall_stereographic>::invert(double x, double y) const
+  point gall_stereographic_invert(double x, double y)
   {
     return point {
       x,
@@ -378,19 +336,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::eckert_1>::simple_projection()
-    : projection {
-	-std::numbers::pi,
-	std::numbers::pi,
-	-std::numbers::pi * 0.5,
-	std::numbers::pi * 0.5
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::eckert_1>::invert(double x, double y) const
+  point eckert_1_invert(double x, double y)
   {
     double factor = 1 - std::abs(y) / std::numbers::pi;
     if (x < -std::numbers::pi * factor || x > std::numbers::pi * factor)
@@ -398,14 +344,7 @@ namespace mkworldmap
     return point { x / factor, y };
   }
 
-  template <>
-  simple_projection<projection_method::eckert_2>::simple_projection()
-    : projection { -2, 2, -1, 1 }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::eckert_2>::invert(double x, double y) const
+  point eckert_2_invert(double x, double y)
   {
     double factor = 2 - std::abs(y);
     if (x < -factor || x > factor)
@@ -416,19 +355,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::eckert_3>::simple_projection()
-    : projection {
-	-2 * std::numbers::pi,
-	2 * std::numbers::pi,
-	-std::numbers::pi,
-	std::numbers::pi
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::eckert_3>::invert(double x, double y) const
+  point eckert_3_invert(double x, double y)
   {
     double factor = 1 + std::sqrt(1 - y * y / (std::numbers::pi * std::numbers::pi));
     if (x < -std::numbers::pi * factor || x > std::numbers::pi * factor)
@@ -439,19 +366,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::eckert_4>::simple_projection()
-    : projection {
-	-2 * std::numbers::pi,
-	2 * std::numbers::pi,
-	-std::numbers::pi,
-	std::numbers::pi
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::eckert_4>::invert(double x, double y) const
+  point eckert_4_invert(double x, double y)
   {
     double param = std::asin(y / std::numbers::pi);
     double factor = 1 + std::cos(param);
@@ -463,19 +378,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::eckert_5>::simple_projection()
-    : projection {
-	-2 * std::numbers::pi,
-	2 * std::numbers::pi,
-	-std::numbers::pi,
-	std::numbers::pi
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::eckert_5>::invert(double x, double y) const
+  point eckert_5_invert(double x, double y)
   {
     double factor = 1 + std::cos(y / 2);
     if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
@@ -486,19 +389,7 @@ namespace mkworldmap
     };
   }
 
-  template <>
-  simple_projection<projection_method::eckert_6>::simple_projection()
-    : projection {
-	-2 * std::numbers::pi,
-	2 * std::numbers::pi,
-	-std::numbers::pi,
-	std::numbers::pi
-      }
-  {
-  }
-
-  template <>
-  point simple_projection<projection_method::eckert_6>::invert(double x, double y) const
+  point eckert_6_invert(double x, double y)
   {
     double factor = 1 + std::cos(y / 2);
     if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)

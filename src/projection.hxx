@@ -55,6 +55,21 @@ namespace mkworldmap
     virtual point invert(double, double) const = 0;
   };
 
+  class singleton_projection : public projection
+  {
+
+    point (*inverter)(double, double);
+  public:
+    singleton_projection() = delete;
+    singleton_projection(singleton_projection const &) = default;
+    singleton_projection(singleton_projection &&) = default;
+    singleton_projection & operator=(singleton_projection const &) = default;
+    singleton_projection & operator=(singleton_projection &&) = default;
+    singleton_projection(double, double, double, double, point (*)(double, double));
+
+    point invert(double, double) const override;
+  };
+  
   template <projection_method type>
   class simple_projection : public projection
   {
@@ -69,7 +84,119 @@ namespace mkworldmap
   };
 
   std::unique_ptr<projection> make_simple_projection(projection_method);
-  
+
+  constexpr double gudermann(double x)
+  {
+    return std::asin(std::tanh(x));
+  }
+    
+  constexpr double inverse_gudermann(double x)
+  {
+    return std::atanh(std::sin(x));
+  }
+
+  double constexpr equirectangular_x_min = -std::numbers::pi;
+  double constexpr equirectangular_x_max = std::numbers::pi;
+  double constexpr equirectangular_y_min = -std::numbers::pi * 0.5;
+  double constexpr equirectangular_y_max = std::numbers::pi * 0.5;
+  point equirectangular_invert(double, double);
+
+  double constexpr miller_x_min = -std::numbers::pi;
+  double constexpr miller_x_max = std::numbers::pi;
+  double constexpr miller_y_min = -1.25 * inverse_gudermann(0.4 * std::numbers::pi);
+  double constexpr miller_y_max = 1.25 * inverse_gudermann(0.4 * std::numbers::pi);
+  point miller_invert(double, double);
+
+  double constexpr sinusoidal_x_min = -std::numbers::pi;
+  double constexpr sinusoidal_x_max = std::numbers::pi;
+  double constexpr sinusoidal_y_min = -std::numbers::pi * 0.5;
+  double constexpr sinusoidal_y_max = std::numbers::pi * 0.5;
+  point sinusoidal_invert(double, double);
+
+  double constexpr mollweide_x_min = -std::numbers::pi;
+  double constexpr mollweide_x_max = std::numbers::pi;
+  double constexpr mollweide_y_min = -std::numbers::pi * 0.5;
+  double constexpr mollweide_y_max = std::numbers::pi * 0.5;
+  point mollweide_invert(double, double);
+
+  double constexpr azimuthal_equidistant_x_min = -std::numbers::pi;
+  double constexpr azimuthal_equidistant_x_max = std::numbers::pi;
+  double constexpr azimuthal_equidistant_y_min = -std::numbers::pi;
+  double constexpr azimuthal_equidistant_y_max = std::numbers::pi;
+  point azimuthal_equidistant_invert(double, double);
+
+  double constexpr aitoff_x_min = -std::numbers::pi;
+  double constexpr aitoff_x_max = std::numbers::pi;
+  double constexpr aitoff_y_min = -std::numbers::pi * 0.5;
+  double constexpr aitoff_y_max = std::numbers::pi * 0.5;
+  point aitoff_invert(double, double);
+
+  double constexpr orthographic_x_min = -1;
+  double constexpr orthographic_x_max = 1;
+  double constexpr orthographic_y_min = -1;
+  double constexpr orthographic_y_max = 1;
+  point orthographic_invert(double, double);
+
+  double constexpr orthographic_aitoff_x_min = -2;
+  double constexpr orthographic_aitoff_x_max = 2;
+  double constexpr orthographic_aitoff_y_min = -1;
+  double constexpr orthographic_aitoff_y_max = 1;
+  point orthographic_aitoff_invert(double, double);
+
+  double constexpr lambert_azimuthal_equal_area_x_min = -2;
+  double constexpr lambert_azimuthal_equal_area_x_max = 2;
+  double constexpr lambert_azimuthal_equal_area_y_min = -2;
+  double constexpr lambert_azimuthal_equal_area_y_max = 2;
+  point lambert_azimuthal_equal_area_invert(double, double);
+
+  double constexpr hammer_x_min = -2 * std::sqrt(2);
+  double constexpr hammer_x_max = 2 * std::sqrt(2);
+  double constexpr hammer_y_min = -std::sqrt(2);
+  double constexpr hammer_y_max = std::sqrt(2);
+  point hammer_invert(double, double);
+
+  double constexpr gall_stereographic_x_min = -std::numbers::pi;
+  double constexpr gall_stereographic_x_max = std::numbers::pi;
+  double constexpr gall_stereographic_y_min = -std::sqrt(2) - 1;
+  double constexpr gall_stereographic_y_max = std::sqrt(2) + 1;
+  point gall_stereographic_invert(double, double);
+
+  double constexpr eckert_1_x_min = -std::numbers::pi;
+  double constexpr eckert_1_x_max = std::numbers::pi;
+  double constexpr eckert_1_y_min = -std::numbers::pi * 0.5;
+  double constexpr eckert_1_y_max = std::numbers::pi * 0.5;
+  point eckert_1_invert(double, double);
+
+  double constexpr eckert_2_x_min = -2;
+  double constexpr eckert_2_x_max = 2;
+  double constexpr eckert_2_y_min = -1;
+  double constexpr eckert_2_y_max = 1;
+  point eckert_2_invert(double, double);
+
+  double constexpr eckert_3_x_min = -2 * std::numbers::pi;
+  double constexpr eckert_3_x_max = 2 * std::numbers::pi;
+  double constexpr eckert_3_y_min = -std::numbers::pi;
+  double constexpr eckert_3_y_max = std::numbers::pi;
+  point eckert_3_invert(double, double);
+
+  double constexpr eckert_4_x_min = -2 * std::numbers::pi;
+  double constexpr eckert_4_x_max = 2 * std::numbers::pi;
+  double constexpr eckert_4_y_min = -std::numbers::pi;
+  double constexpr eckert_4_y_max = std::numbers::pi;
+  point eckert_4_invert(double, double);
+
+  double constexpr eckert_5_x_min = -2 * std::numbers::pi;
+  double constexpr eckert_5_x_max = 2 * std::numbers::pi;
+  double constexpr eckert_5_y_min = -std::numbers::pi;
+  double constexpr eckert_5_y_max = std::numbers::pi;
+  point eckert_5_invert(double, double);
+
+  double constexpr eckert_6_x_min = -2 * std::numbers::pi;
+  double constexpr eckert_6_x_max = 2 * std::numbers::pi;
+  double constexpr eckert_6_y_min = -std::numbers::pi;
+  double constexpr eckert_6_y_max = std::numbers::pi;
+  point eckert_6_invert(double, double);
+
   class cylindrical_equal_area_projection : public projection
   {
 
@@ -86,8 +213,6 @@ namespace mkworldmap
     point invert(double, double) const override;
   };
 
-  double gudermann(double x);
-  
   class mercator_projection : public projection
   {
     double max_latitude;
