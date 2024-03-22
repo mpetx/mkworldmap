@@ -7,7 +7,7 @@ SAMPLE_DIR=samples
 
 mkdir -p $SAMPLE_DIR
 
-for projection in equirectangular mercator miller central-cylindrical sinusoidal mollweide azimuthal-equidistant aitoff orthographic orthographic-aitoff lambert-azimuthal-equal-area hammer
+for projection in equirectangular mercator miller central-cylindrical sinusoidal mollweide azimuthal-equidistant aitoff orthographic orthographic-aitoff lambert-azimuthal-equal-area hammer gall-stereographic eckert-1 eckert-2 eckert-3 eckert-4 eckert-5 eckert-6 collignon
 do
     echo "Generating $projection.jpg"
     ./bin/mkworldmap -p "$projection" -o "$SAMPLE_DIR/$projection.jpg" -w "$WIDTH"
