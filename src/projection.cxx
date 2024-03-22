@@ -160,6 +160,13 @@ namespace mkworldmap
 	 eckert_6_y_min,
 	 eckert_6_y_max,
 	 eckert_6_invert);
+    case collignon:
+      return std::make_unique<singleton_projection>
+	(collignon_x_min,
+	 collignon_x_max,
+	 collignon_y_min,
+	 collignon_y_max,
+	 collignon_invert);
     }
     return std::unique_ptr<projection> { };
   }
@@ -400,4 +407,13 @@ namespace mkworldmap
     };
   }
 
+  point collignon_invert(double x, double y)
+  {
+    double factor = 1 - y / std::sqrt(std::numbers::pi);
+    double lon = x * std::sqrt(std::numbers::pi) / 2 / factor;
+    double lat = std::asin(1 - factor * factor);
+    if (lon < -std::numbers::pi || lon > std::numbers::pi)
+      return point { std::nan(""), std::nan("") };
+    return point { lon, lat };
+  }
 }

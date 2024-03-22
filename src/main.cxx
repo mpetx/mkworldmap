@@ -77,6 +77,7 @@ namespace mkworldmap
       : std::strcmp(method, "eckert-4") == 0 ? projection_method::eckert_4
       : std::strcmp(method, "eckert-5") == 0 ? projection_method::eckert_5
       : std::strcmp(method, "eckert-6") == 0 ? projection_method::eckert_6
+      : std::strcmp(method, "collignon") == 0 ? projection_method::collignon
       : projection_method::invalid;
   }
 

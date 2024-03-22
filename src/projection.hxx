@@ -30,6 +30,7 @@ namespace mkworldmap
     eckert_4,
     eckert_5,
     eckert_6,
+    collignon,
     invalid
   };
 
@@ -197,6 +198,12 @@ namespace mkworldmap
   double constexpr eckert_6_y_max = std::numbers::pi;
   point eckert_6_invert(double, double);
 
+  double constexpr collignon_x_min = -2 * std::sqrt(std::numbers::pi) * std::sqrt(2);
+  double constexpr collignon_x_max = 2 * std::sqrt(std::numbers::pi) * std::sqrt(2);
+  double constexpr collignon_y_min = std::sqrt(std::numbers::pi) * (1 - std::sqrt(2));
+  double constexpr collignon_y_max = std::sqrt(std::numbers::pi);
+  point collignon_invert(double, double);
+  
   class cylindrical_equal_area_projection : public projection
   {
 
