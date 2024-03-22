@@ -23,26 +23,26 @@ mkworldmap OPTIONS
 
 | 値 | 説明 |
 |:-:|:-|
-| `equirectangular` | 正距円筒図法 |
-| `cylindrical-equal-area` | 正積円筒図法 |
-| `mercator` | メルカトル図法 |
-| `miller` | ミラー図法 |
-| `central-cylindrical` | 心射円筒図法 |
-| `sinusoidal` | サンソン図法 |
-| `mollweide` | モルワイデ図法 |
-| `azimuthal-equidistant` | 正距方位図法 |
 | `aitoff` | エイトフ図法 |
-| `orthographic` | 正射図法 |
-| `orthographic-aitoff` | 正射エイトフ図法 |
-| `lambert-azimuthal-equal-area` | ランベルト正積方位図法 |
-| `hammer` | ハンメル図法 |
-| `gall-stereographic` | ゴール平射図法 |
+| `azimuthal-equidistant` | 正距方位図法 |
+| `central-cylindrical` | 心射円筒図法 |
+| `cylindrical-equal-area` | 正積円筒図法 |
 | `eckert-1` | エケルト第一図法 |
 | `eckert-2` | エケルト第二図法 |
 | `eckert-3` | エケルト第三図法 |
 | `eckert-4` | エケルト第四図法 |
 | `eckert-5` | エケルト第五図法 |
 | `eckert-6` | エケルト第六図法 |
+| `equirectangular` | 正距円筒図法 |
+| `gall-stereographic` | ゴール平射図法 |
+| `hammer` | ハンメル図法 |
+| `lambert-azimuthal-equal-area` | ランベルト正積方位図法 |
+| `mercator` | メルカトル図法 |
+| `miller` | ミラー図法 |
+| `mollweide` | モルワイデ図法 |
+| `orthographic` | 正射図法 |
+| `orthographic-aitoff` | 正射エイトフ図法 |
+| `sinusoidal` | サンソン図法 |
 
 経度と緯度の範囲は次の通りです。
 
