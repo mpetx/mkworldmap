@@ -19,6 +19,7 @@ namespace mkworldmap
 
   color earth_texture::color_at_grid(std::size_t x, std::size_t y) const
   {
+    y = height - y - 1;
     std::size_t offset = y * 3 * width + x * 3;
     return color {
       buffer[offset],

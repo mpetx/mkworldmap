@@ -41,13 +41,14 @@ namespace mkworldmap
   void image_creator::save_image(std::string const & path) const
   {
     std::unique_ptr<char unsigned[]> buffer = std::make_unique<char unsigned[]>(width * height * 3);
-    for (std::size_t y = 0; y < height; ++y) {
+    std::size_t i = 0;
+    for (std::size_t y = height; y > 0; --y) {
       for (std::size_t x = 0; x < width; ++x) {
-	color c = color_at(x, y);
+	color c = color_at(x, y - 1);
 	std::size_t offset = y * 3 * width + x * 3;
-	buffer[offset] = c.red;
-	buffer[offset + 1] = c.green;
-	buffer[offset + 2] = c.blue;
+	buffer[i++] = c.red;
+	buffer[i++] = c.green;
+	buffer[i++] = c.blue;
       }
     }
     stbi_write_jpg(path.c_str(), width, height, 3, buffer.get(), jpeg_quality);
