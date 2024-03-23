@@ -143,7 +143,7 @@ int main(int argc, char const * argv[])
     proj = std::make_unique<central_cylindrical_projection>(max_latitude * std::numbers::pi / 180);
   } break;
   default:
-    proj = make_simple_projection(proj_method);
+    proj = make_singleton_projection(proj_method);
   }
   
   std::size_t width = get_output_image_width(argc, argv);

@@ -70,21 +70,10 @@ namespace mkworldmap
 
     point invert(double, double) const override;
   };
-  
-  template <projection_method type>
-  class simple_projection : public projection
-  {
-  public:
-    simple_projection();
-    simple_projection(simple_projection const &) = default;
-    simple_projection(simple_projection &&) = default;
-    simple_projection & operator=(simple_projection const &) = default;
-    simple_projection & operator=(simple_projection &&) = default;
 
-    point invert(double, double) const override;
-  };
-
-  std::unique_ptr<projection> make_simple_projection(projection_method);
+  point cylindrical_projection_invert(double, double, double (*)(double), double (*)(double));
+    
+  std::unique_ptr<projection> make_singleton_projection(projection_method);
 
   constexpr double gudermann(double x)
   {
@@ -114,10 +103,11 @@ namespace mkworldmap
   double constexpr sinusoidal_y_max = std::numbers::pi * 0.5;
   point sinusoidal_invert(double, double);
 
-  double constexpr mollweide_x_min = -std::numbers::pi;
-  double constexpr mollweide_x_max = std::numbers::pi;
-  double constexpr mollweide_y_min = -std::numbers::pi * 0.5;
-  double constexpr mollweide_y_max = std::numbers::pi * 0.5;
+  double constexpr mollweide_parameter = 2 * std::sqrt(2) / std::numbers::pi;
+  double constexpr mollweide_x_min = -std::numbers::pi * mollweide_parameter;
+  double constexpr mollweide_x_max = std::numbers::pi * mollweide_parameter;
+  double constexpr mollweide_y_min = -4 / (mollweide_parameter * std::numbers::pi);
+  double constexpr mollweide_y_max = 4 / (mollweide_parameter * std::numbers::pi);
   point mollweide_invert(double, double);
 
   double constexpr azimuthal_equidistant_x_min = -std::numbers::pi;

@@ -37,7 +37,7 @@ namespace mkworldmap
     return inverter(x, y);
   }
   
-  std::unique_ptr<projection> make_simple_projection(projection_method method)
+  std::unique_ptr<projection> make_singleton_projection(projection_method method)
   {
     using enum projection_method;
     switch (method) {
@@ -171,6 +171,19 @@ namespace mkworldmap
     return std::unique_ptr<projection> { };
   }
 
+  point cylindrical_projection_invert(double x, double y, double (*shrink_factor)(double), double (*invert_height)(double))
+  {
+    double factor = shrink_factor(y);
+    double lon = x / factor;
+    if (lon < -std::numbers::pi || lon > std::numbers::pi)
+      return point { std::nan(""), std::nan("") };
+    else
+      return point {
+	lon,
+	invert_height(y)
+      };
+  }
+  
   point equirectangular_invert(double x, double y)
   {
     return point { x, y };
@@ -246,23 +259,36 @@ namespace mkworldmap
     };
   }
 
-  point sinusoidal_invert(double x, double y)
+  double sinusoidal_shrink_factor(double y)
   {
-    double cos = std::cos(y);
-    if (x < -std::numbers::pi * cos || x > std::numbers::pi * cos)
-      return point { std::nan(""), std::nan("")};
-    else
-      return point { x / cos, y };
+    return std::cos(y);
   }
 
+  double sinusoidal_invert_height(double y)
+  {
+    return y;
+  }
+  
+  point sinusoidal_invert(double x, double y)
+  {
+    return cylindrical_projection_invert(x, y, sinusoidal_shrink_factor, sinusoidal_invert_height);
+  }
+
+  double mollweide_shrink_factor(double y)
+  {
+    double s = mollweide_parameter * std::numbers::pi * y / 4;
+    return mollweide_parameter * std::sqrt(1 - s * s);
+  }
+
+  double mollweide_invert_height(double y)
+  {
+    double theta = std::asin(y * mollweide_parameter * std::numbers::pi / 4);
+    return std::asin((2 * theta + std::sin(2 * theta)) / std::numbers::pi);
+  }
+  
   point mollweide_invert(double x, double y)
   {
-    double param = std::asin(y * 2 / std::numbers::pi);
-    double lon = x / std::cos(param);
-    if (lon < -std::numbers::pi || lon > std::numbers::pi)
-      return point { std::nan(""), std::nan("") };
-    double lat = std::asin((std::sin(2 * param) + 2 * param) / std::numbers::pi);
-    return point { lon, lat };
+    return cylindrical_projection_invert(x, y, mollweide_shrink_factor, mollweide_invert_height);
   }
 
   point azeq_invert(double x, double y, double range)
@@ -343,77 +369,115 @@ namespace mkworldmap
     };
   }
 
+  double eckert_1_shrink_factor(double y)
+  {
+    return 1 - std::abs(y) / std::numbers::pi;
+  }
+
+  double eckert_1_invert_height(double y)
+  {
+    return y;
+  }
+  
   point eckert_1_invert(double x, double y)
   {
-    double factor = 1 - std::abs(y) / std::numbers::pi;
-    if (x < -std::numbers::pi * factor || x > std::numbers::pi * factor)
-      return point { std::nan(""), std::nan("") };
-    return point { x / factor, y };
+    return cylindrical_projection_invert(x, y, eckert_1_shrink_factor, eckert_1_invert_height);
   }
 
+  double eckert_2_shrink_factor(double y)
+  {
+    double s = 2 - std::abs(y);
+    return s / std::numbers::pi;
+  }
+
+  double eckert_2_invert_height(double y)
+  {
+    double s = 2 - std::abs(y);
+    double sign = y >= 0 ? 1 : -1;
+    return sign * std::asin((4 - s * s) / 3);
+  }
+  
   point eckert_2_invert(double x, double y)
   {
-    double factor = 2 - std::abs(y);
-    if (x < -factor || x > factor)
-      return point { std::nan(""), std::nan("") };
-    return point {
-      x * std::numbers::pi / factor,
-      sign(y) * std::asin((4 - factor * factor) / 3)
-    };
+    return cylindrical_projection_invert(x, y, eckert_2_shrink_factor, eckert_2_invert_height);
   }
 
+  double eckert_3_shrink_factor(double y)
+  {
+    return 1 + std::sqrt(1 - y * y / (std::numbers::pi * std::numbers::pi));
+  }
+
+  double eckert_3_invert_height(double y)
+  {
+    return y / 2;
+  }
+  
   point eckert_3_invert(double x, double y)
   {
-    double factor = 1 + std::sqrt(1 - y * y / (std::numbers::pi * std::numbers::pi));
-    if (x < -std::numbers::pi * factor || x > std::numbers::pi * factor)
-      return point { std::nan(""), std::nan("") };
-    return point {
-      x / factor,
-      y / 2
-    };
+    return cylindrical_projection_invert(x, y, eckert_3_shrink_factor, eckert_3_invert_height);
+  }
+
+  double eckert_4_shrink_factor(double y)
+  {
+    double s = y / std::numbers::pi;
+    return 1 + std::sqrt(1 - s * s);
+  }
+
+  double eckert_4_invert_height(double y)
+  {
+    double theta = std::asin(y / std::numbers::pi);
+    return std::asin((theta + std::sin(theta) * std::cos(theta) + 2 * std::sin(theta)) / (2 + std::numbers::pi / 2));
   }
 
   point eckert_4_invert(double x, double y)
   {
-    double param = std::asin(y / std::numbers::pi);
-    double factor = 1 + std::cos(param);
-    if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
-      return point { std::nan(""), std::nan("") };
-    return point {
-      x / factor,
-      std::asin((param + std::sin(param) * std::cos(param) + 2 * std::sin(param)) / (2 + std::numbers::pi / 2))
-    };
+    return cylindrical_projection_invert(x, y, eckert_4_shrink_factor, eckert_4_invert_height);
   }
 
+  double eckert_5_shrink_factor(double y)
+  {
+    return 1 + std::cos(y / 2);
+  }
+
+  double eckert_5_invert_height(double y)
+  {
+    return y / 2;
+  }
+  
   point eckert_5_invert(double x, double y)
   {
-    double factor = 1 + std::cos(y / 2);
-    if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
-      return point { std::nan(""), std::nan("") };
-    return point {
-      x / factor,
-      y / 2
-    };
+    return cylindrical_projection_invert(x, y, eckert_5_shrink_factor, eckert_5_invert_height);
   }
 
+  double eckert_6_shrink_factor(double y)
+  {
+    return 1 + std::cos(y / 2);
+  }
+
+  double eckert_6_invert_height(double y)
+  {
+    return std::asin((y / 2 + std::sin(y / 2)) / (1  + std::numbers::pi / 2));
+  }
+  
   point eckert_6_invert(double x, double y)
   {
-    double factor = 1 + std::cos(y / 2);
-    if (x < - std::numbers::pi * factor || x > std::numbers::pi * factor)
-      return point { std::nan(""), std::nan("") };
-    return point {
-      x / factor,
-      std::asin((y / 2 + std::sin(y / 2)) / (1 + std::numbers::pi / 2))
-    };
+    return cylindrical_projection_invert(x, y, eckert_6_shrink_factor, eckert_6_invert_height);
   }
 
+  double collignon_shrink_factor(double y)
+  {
+    double s = 1 - y / std::sqrt(std::numbers::pi);
+    return 2 * s / std::sqrt(std::numbers::pi);
+  }
+
+  double collignon_invert_height(double y)
+  {
+    double s = 1 - y / std::sqrt(std::numbers::pi);
+    return std::asin(1 - s * s);
+  }
+  
   point collignon_invert(double x, double y)
   {
-    double factor = 1 - y / std::sqrt(std::numbers::pi);
-    double lon = x * std::sqrt(std::numbers::pi) / 2 / factor;
-    double lat = std::asin(1 - factor * factor);
-    if (lon < -std::numbers::pi || lon > std::numbers::pi)
-      return point { std::nan(""), std::nan("") };
-    return point { lon, lat };
+    return cylindrical_projection_invert(x, y, collignon_shrink_factor, collignon_invert_height);
   }
 }
