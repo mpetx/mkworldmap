@@ -26,6 +26,7 @@ mkworldmap OPTIONS
 | `aitoff` | エイトフ図法 |
 | `azimuthal-equidistant` | 正距方位図法 |
 | `central-cylindrical` | 心射円筒図法 |
+| `collignon` | コリニョン図法 |
 | `cylindrical-equal-area` | 正積円筒図法 |
 | `eckert-1` | エケルト第一図法 |
 | `eckert-2` | エケルト第二図法 |
